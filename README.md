@@ -1,4 +1,4 @@
-Textual Interface AVQA
+# Textual Interface AVQA
 Public repository for paper submission _DESIGNING TEXTUAL INTERFACES TO ENHANCE LLM REASONING ON AUDIO-VISUAL QUESTION ANSWERING_.
 
 This file records implementation and evaluation details omitted from the main paper for space.
