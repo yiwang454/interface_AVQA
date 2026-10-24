@@ -1,0 +1,28 @@
+task:
+  video_only: false
+  enable_thinking: false
+  batch_size: 1
+  parallel_qwen: false
+  qwen_delay_s: 0.0
+  retry_delay_s: 0.0
+  max_retries: 3
+  timeout: 180
+
+model:
+  qwen_model: qwen3-omni-instruct
+  qwen_base_url: "http://10.62.210.66:8000/v1"
+  qwen_api_key: EMPTY
+  
+sampling_params:
+  temperature: 0.0
+  top_p: 1.0
+  top_k: 0
+  max_tokens: 4096
+  fps: 2.0
+  max_frames: 128
+  seed: 1234
+
+transport:
+  media_url_mode: file
+  stream: false
+  include_enable_thinking: false

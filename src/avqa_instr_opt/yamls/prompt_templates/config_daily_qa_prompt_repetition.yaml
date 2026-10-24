@@ -1,0 +1,170 @@
+QA_PROMPT_TEMPLATE: |
+  Your task is to accurately answer multiple-choice questions based on the given video.
+  Select the single most accurate answer from the given choices.
+  Question: {question}
+  Choices: {options}
+  Your answer should be a capital letter representing your choice: A, B, C, or D. Don't generate any other text.
+
+QA_PROMPT_TEMPLATE_THINKING: |
+  Your task is to accurately answer multiple-choice questions based on the given video.
+  Question: {question}
+  Choices: {options}
+  First think step by step, then give your final answer between the <answer> and </answer> tags.
+  Your final answer should be a capital letter representing your choice: A, B, C, or D.
+
+QA_PROMPT_TEMPLATE1: |
+  Your task is to accurately answer multiple-choice questions based on the given video.
+  Select the single most accurate answer from the given choices.
+  Question: {question}
+  Choices: {options}
+  Your answer should be a capital letter representing your choice: A, B, C, or D. Some choices might have been eliminated. Don't output an option if it's not in Choices list. Don't generate any other text.
+
+QA_PROMPT_SYSTEM: |
+  You are Qwen, a virtual human developed by the Qwen Team, Alibaba Group, capable of perceiving auditory and visual inputs, as well as generating text and speech.
+
+GROUNDING_PROMPT1: |
+  You are solving a video question answering task.
+  Tell me exactly what period of time in the video corresponds to the answer to that question. Then answer the question.
+  Provide the start and end time of the period in seconds from the start of the video between the <grounding> and </grounding> tags (in the format <grounding>00:04-00:30</grounding>), and then give your final answer between the <answer> and </answer> tags.
+  Question: {question}
+  Options: {options}
+
+GROUNDING_PROMPT2: |
+  You are solving a video question answering task.
+  Tell me exactly what period of time in the video corresponds to the answer to that question.
+  Provide the start and end time of the period in seconds from the start of the video between the <grounding> and </grounding> tags (in the format <grounding>00:04-00:30</grounding>).
+  Question: {question}
+  Options: {options}
+
+GROUNDING_PROMPT3: |
+  You are solving a video question answering task.
+  Tell me exactly what period of time in the video corresponds to the answer to that question.
+  Provide the start and end time of the period in seconds from the start of the video between the <grounding> and </grounding> tags (in the format <grounding>00:04-00:30</grounding>).
+  Question: {question}
+
+QA_PROMPT_TEMPLATE_CAPTION: |
+  Your task is to accurately answer multiple-choice questions based on the given video.
+  Audio caption: {audio_caption} Video caption: {video_caption}
+  Select the single most accurate answer from the given choices.
+  Question: {question}
+  Choices: {options}
+  Your answer should be a capital letter representing your choice: A, B, C, or D. Don't generate any other text.
+
+QA_PROMPT_TEMPLATE_CAPTION_OMNI: |
+  Your task is to accurately answer multiple-choice questions based on the given audio-visual caption.
+  Audio-visual caption: {video_caption}
+  Select the single most accurate answer from the given choices.
+  Question: {question}
+  Choices: {options}
+  Your answer should be a capital letter representing your choice: A, B, C, or D. Don't generate any other text.
+
+QA_PROMPT_AUDIO: |
+  Your task is to accurately answer multiple-choice questions based on the given audio.
+
+QA_PROMPT_VIDEO: |
+  Your task is to accurately answer multiple-choice questions based on the given silent video.
+
+QA_PROMPT_CAPTION: |
+  "Your task is to accurately answer multiple-choice questions based on the given video caption.
+  Caption: {audio_caption}
+  Select the single most accurate answer from the given choices.
+  Question: {question}
+  Choices: {options}
+  Your answer should be a capital letter representing your choice: A, B, C, or D. Don't generate any other text."
+
+QA_PROMPT_CAPTION_THINK: |
+  "Your task is to accurately answer multiple-choice questions based on the given video caption.
+  Caption: {audio_caption}
+  Select the single most accurate answer from the given choices.
+  Question: {question}
+  Choices: {options}
+  First think step by step, then give your answer in the format of <answer>A</answer>."
+
+QA_PROMPT_VIDEO_CAPTION: |
+  "Your task is to accurately answer multiple-choice questions based on the given video caption.
+  Video caption: {video_caption}
+  Select the single most accurate answer from the given choices.
+  Question: {question}
+  Choices: {options}
+  Your answer should be a capital letter representing your choice: A, B, C, or D. Don't generate any other text."
+
+BACKVERIFICATION_PROMPT1: |
+  "You are a back-verification question generator for Audio-Visual Multiple-Choice QA.
+
+  Goal:
+  Given a question and multiple-choice options, write ONE short 'back-verify' question (one sentence) for EACH option.
+  A back-verify question should:
+  - Be answerable by re-checking the video/audio (or by plausible consequence-checking for inference options).
+  - Prefer concrete evidence queries: time order (before/after), what is seen, what is heard, what is said.
+
+  Output format (STRICT):
+  Return a JSON object: {{'A': '...', 'B': '...', 'C': '...', 'D': '...'}}
+  No extra text.
+
+  --- In-context examples ---
+  Example 1 (audio-visual alignment):
+  Input:
+  question: What happened visually before the narrator mentioned having a '13 mm on this hub'?
+  options:
+  D. A metallic part with studs was shown, and a loud noise was heard.
+  Output:
+  {{'A': '...', 'B': '...', 'C': '...', 'D':"What audio or speech event occurs immediately before the moment a metallic part with studs is shown and a loud noise is heard?"}}
+
+  Example 2 (inference / purpose):
+  Input:
+  question: Considering the audio and visual cues, what is the likely purpose of the individuals handling the white wired headphones?
+  options:
+  B. They are preparing to listen to music.
+  Output:
+  {{'A': '...', 'B': 'If they are preparing to listen to music, what observable actions or audio/visual cues would you expect them to do or produce next?', 'C': '...', 'D': '...'}}
+  Now do the task with:
+  Question: {question}
+  Options: {options}"
+
+BACKVERIFICATION_PROMPT2: |
+  "Given the original question Q1 and a candidate option O1, the Back Verification Question Q_BV is a dual question constructed by taking the key statement in O1 as a premise and then querying, in reverse, the core information targeted by Q1 (e.g., the corresponding visual detail, time point, or event). If O1 is true, the correct answer A_BV should be consistent with or equivalent to the key answer information in Q1, thereby supporting O1 as the correct option for Q1. 
+  The above is the prompt to design back verification question. Now based on this, design Q_BV for each question and option pair. Requirements: - Break this down step by step (no more than 4 steps), before return the final result. - When formulating the query for Q_BV, use broad, categorical terms rather than highly specific phrases from Q1. - Return the final result in JSON format: {{"Q_BV": "..."}}
+  Question: {question}
+  Option: {options}"
+
+BACKVERIFICATION_PROMPT3: |
+  "You are an expert at logical reasoning and question design. Your task is to generate a Back Verification Question (Q_BV) given an original question (Q1) and a candidate option (O1).
+  Concept: Every question has a "Premise" (the given context) and a "Target" (the missing information). Q1 uses a Premise to ask for a Target, and O1 is a candidate for that Target. Q_BV is a "dual question." To construct Q_BV, you must swap the knowns and unknowns: take the key statement in O1 as your new Premise, and query the original Premise of Q1.
+  Requirements: Break this down into exactly 3 steps before returning the final result:
+  1.Identify the Premise and Target of Q1.
+  2.Treat O1 as the new Premise.
+  3.Formulate the raw Q_BV by asking for the original Premise of Q1 based on O1. Use broad, categorical terms for the query rather than highly specific phrases from Q1.
+  Return the final result in JSON format: {{"Q_BV": "..."}}
+  Question: {question} 
+  Option: {options}"
+
+BACKVERIFICATION_REWRITE_OPTION: |
+  "Question: {question}
+  Option: {options}
+  Your task is to rewrite each option with its question into a full sentence, which is a self-contained sentence that allows reader to understand without reading the question. Return a list of option sentences in JSON format: {{"options": ["A. ...", "B. ...", ...]}}"
+
+BACKVERIFICATION_QA_PROMPT: |
+  "Your task is to accurately answer the question based on the given audio and video.
+  Question: {question}"
+
+BV_DECISION_PROMPT: |
+  "You are a verifier for an iterative video QA system. You are given the question Q1, current candidate answer O1, back verification question and answer. The Back Verification Question Q_BV is a dual question to Q1, constructed by taking the key statement in O1 as a premise and then querying, in reverse, the core information targeted by Q1 (e.g., the corresponding visual detail, time point, or event). If the answer A_BV is consistent with or equivalent to the key answer information in Q1, then O1 is true, ACCEPT. If the answer A_BV contradicts or differs from Q1, then O1 is false, ELIMINATE. If the answer A_BV is ambiguous/insufficient (neither clearly supports nor contradicts), then O1 is uncertain, RETRY.
+  Decide the next step:
+  1.ACCEPT. 
+  2.ELIMINATE.
+  3.RETRY: raise another back verification question.
+  Original question Q1: {question}
+  Current candidate answer O1: {options}
+  Back-verification question Q_BV: {back_verify_question}
+  Back-verification answer A_BV: {back_verify_answer}
+  Return JSON as final answer:
+  {{"action": "accept|eliminate|retry", "eliminate_option": "A|B|C|D|null", "retry_question": "..."}}"
+
+BV_DECISION_PROMPT_ALL_OPTIONS: |
+  "You are a verifier for a multiple-choice video QA system.
+  You are given the original question Q1 and, for each option, its candidate answer, back-verification question, and back-verification answer.
+  For each option O, the Back Verification Question (Q_BV) is a dual question to Q1: it is constructed by taking the key statement in O as a premise and then querying, in reverse, the core information in Q1 (such as the relevant visual detail, time point, or event). If the Back Verification Answer (A_BV) is consistent with or equivalent to the key information in Q1, this supports that option. If A_BV contradicts or fails to match the key information asked in Q1, this weakens that option.
+  Your task is to compare all four options, and select the option whose back-verification result most strongly and directly matches the key information in Q1.
+  Question Q1: {question}
+  Option, back verification question and answer: {options}
+  Think step by step, and return a capital letter representing your choice: A, B, C, or D."

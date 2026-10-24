@@ -1,0 +1,22 @@
+task:
+  video_only: true
+  timeout: 180
+  max_retries: 3
+  retry_delay_s: 5
+  # Do not request thought parts. Thinking is disabled by the explicit budget
+  # below; this flag alone would only hide thought parts, not disable thinking.
+  include_thoughts: false
+  print_first_prompt: false
+
+model:
+  backend: gemini
+  gemini_model: gemini-2.5-flash
+
+sampling_params:
+  temperature: 0.0
+  top_p: 1.0
+  # Vertex Gemini validates topK in the range 1..64.
+  top_k: 64
+  max_tokens: 4096
+  # Gemini 2.5 Flash: 0 disables thinking; -1 would restore dynamic thinking.
+  thinking_budget: 0

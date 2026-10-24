@@ -1,0 +1,5 @@
+breadth: 10
+depth: 3
+init_temperature: 1.4
+track_stats: true
+num_threads: 1

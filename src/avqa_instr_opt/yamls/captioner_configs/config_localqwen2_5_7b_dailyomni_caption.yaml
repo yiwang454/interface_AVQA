@@ -1,0 +1,32 @@
+task:
+  video_only: false
+  use_audio_in_video: false
+  video_first: false
+  enable_thinking: false
+  qwen_delay_s: 0.0
+  retry_delay_s: 1.0
+  max_retries: 3
+  timeout: 240
+  reliable_max_batch_retries: 2
+
+model:
+  qwen_model: qwen2.5-omni-7b
+  qwen_base_url: "http://10.62.186.26:8000/v1"
+  qwen_api_key: EMPTY
+
+sampling_params:
+  temperature: 0.0
+  top_p: 1.0
+  top_k: 0
+  max_tokens: 1024
+  fps: 2.0
+  max_frames: 128
+  seed: 1234
+  repetition_penalty: 1.2
+
+# ``to_data_url`` and the OpenAI-compatible transport consume these global
+# wire-format variables.  The caption launcher intentionally does not repeat them.
+transport:
+  media_url_mode: file
+  stream: 0
+  include_enable_thinking: 0

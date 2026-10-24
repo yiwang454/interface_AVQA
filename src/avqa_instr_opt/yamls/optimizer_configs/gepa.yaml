@@ -1,0 +1,24 @@
+max_full_evals: 16
+reflection_minibatch_size: 16
+candidate_selection_strategy: pareto
+skip_perfect_score: true
+use_merge: true
+max_merge_invocations: 5
+num_threads: 1
+track_stats: true
+track_best_outputs: true
+
+run:
+  algorithm: gepa
+  trainset_jsonl: /mnt/ceph_rbd/data/avqa_project/daily_omni/daily_omni_cuts_selectedTrain125.jsonl
+  valset_jsonl: /mnt/ceph_rbd/data/avqa_project/daily_omni/daily_omni_cuts_selectedVal125.jsonl
+  output_program: ${GEPA_RUN_DIR}/compiled_gepa.json
+  initial_program: ${GEPA_RUN_DIR}/initial_gepa_program.json
+  metadata_json: ${GEPA_RUN_DIR}/compiled_gepa_metadata.json
+  optimizer_log_dir: ${GEPA_RUN_DIR}/optimizer_logs
+  optimized_prompt_config_yaml: ${GEPA_RUN_DIR}/optimized_prompt_config_gepa.yaml
+  trajectory_jsonl: ${GEPA_RUN_DIR}/optimized_trainset_trajectories.jsonl
+  final_eval_output_jsonl: ${GEPA_RUN_DIR}/output_test.jsonl
+  final_eval_output_dir: ${GEPA_RUN_DIR}
+  gepa_log_dir: ${GEPA_RUN_DIR}/gepa_logs
+  gepa_seed: 18

@@ -1,0 +1,8 @@
+model:
+  provider: elm_gpt
+  name: gpt-4.1
+sampling_params:
+  temperature: 0.0
+  max_tokens: 32768
+  reasoning_effort: none
+  seed: 1234

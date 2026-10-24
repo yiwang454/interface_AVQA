@@ -1,0 +1,20 @@
+# 10 full-evaluation equivalents x (Train125 + Val125) = 2500 metric calls.
+max_full_evals: 10
+reflection_minibatch_size: 16
+candidate_selection_strategy: pareto
+skip_perfect_score: true
+use_merge: true
+max_merge_invocations: 5
+num_threads: 1
+track_stats: true
+track_best_outputs: true
+
+run:
+  algorithm: gepa
+  output_program: ${GEPA_RUN_DIR}/compiled_gepa.json
+  initial_program: ${GEPA_RUN_DIR}/initial_gepa_program.json
+  metadata_json: ${GEPA_RUN_DIR}/compiled_gepa_metadata.json
+  optimizer_log_dir: ${GEPA_RUN_DIR}/optimizer_logs
+  optimized_prompt_config_yaml: ${GEPA_RUN_DIR}/optimized_prompt_config_gepa.yaml
+  trajectory_jsonl: ${GEPA_RUN_DIR}/optimized_trainset_trajectories.jsonl
+  gepa_log_dir: ${GEPA_RUN_DIR}/gepa_logs

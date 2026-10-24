@@ -1,0 +1,25 @@
+[project]
+name = "avqa-instruction-optimization"
+version = "0.0.1"
+description = "Non-ReAct direct-MLLM and caption-then-text AVQA instruction optimization with Qwen3-Omni and Gemini."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "dspy>=3.2.1",
+    "google-auth>=2.0.0",
+    "openai>=2.0.0",
+    "requests>=2.31.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3.5"]
+optimizers = ["gepa>=0.0.27", "optuna>=4.0", "tqdm>=4.67"]
+# Inference launcher scripts additionally need lhotse and tqdm.
+
+[build-system]
+requires = ["setuptools>=73.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

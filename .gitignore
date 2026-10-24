@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.env
+.venv/
+build/
+dist/
+outputs/
+*.log
+
+# Local assembly helpers are reviewed and run by repository maintainers, but
+# are not part of the public release.
+/scripts_building_repo/

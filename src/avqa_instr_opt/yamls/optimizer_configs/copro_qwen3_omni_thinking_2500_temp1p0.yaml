@@ -1,0 +1,6 @@
+# 5 candidates x 4 depths x 125 training examples = 2500 task metric calls.
+breadth: 5
+depth: 4
+init_temperature: 1.0
+track_stats: true
+num_threads: 4

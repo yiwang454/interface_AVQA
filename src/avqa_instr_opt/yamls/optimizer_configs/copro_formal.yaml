@@ -1,0 +1,7 @@
+# 8 candidates x 4 depths x 125 train examples = 4000 nominal Qwen task calls.
+# This matches gepa.yaml's 16 x (Train125 + Val125) max_metric_calls budget.
+breadth: 8
+depth: 4
+init_temperature: 1.0
+track_stats: true
+num_threads: 2

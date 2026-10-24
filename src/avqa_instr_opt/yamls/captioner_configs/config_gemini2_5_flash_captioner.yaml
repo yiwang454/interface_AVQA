@@ -1,0 +1,19 @@
+task:
+  video_only: true
+  batch_size: 1
+  timeout: 180
+  max_retries: 4
+  retry_delay_s: 30
+  include_thoughts: true
+  print_first_prompt: false
+
+model:
+  backend: gemini
+  gemini_model: gemini-2.5-flash
+
+sampling_params:
+  temperature: 0.0
+  top_p: 1.0
+  # The official Vertex API omits topK rather than accepting 0.
+  top_k: null
+  max_tokens: 4096
