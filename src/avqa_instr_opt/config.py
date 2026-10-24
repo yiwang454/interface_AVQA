@@ -166,7 +166,7 @@ def load_text_reasoner_config_yaml(path: Path | None) -> dict[str, Any]:
     """Load the text-only reasoner config into ``TEXT_REASONER_*`` variables.
 
     The accepted ``task/model/sampling_params`` layout matches the existing
-    ``daily_125_elm_caption.yaml`` and the sibling reasoner-config convention.
+    caption-reasoner YAML and the sibling reasoner-config convention.
     ``task.caption_dir`` is returned as source configuration; the caption
     runner consumes it only in cached mode.
     """

@@ -5,6 +5,37 @@ Daily-Omni contains 1,197 examples split into 125 training, 125 validation, and
 947 held-out test examples. All values below are accuracy percentages. `Delta
 Test` is relative to the corresponding unoptimized model.
 
+## Setup and data preparation
+
+Install the package and the optional dataset-preparation dependency:
+
+```bash
+pip install -e '.[data]'
+cp .env.example .env
+```
+
+Fill in the provider credentials in `.env`, then export them in the shell used
+to run the experiments. Qwen experiments read their OpenAI-compatible local
+endpoint from `QWEN_BASE_URL`; `QWEN_API_KEY=EMPTY` is suitable for an
+unauthenticated local server.
+
+After downloading the official Daily-Omni metadata, videos, and extracted audio
+files, build the full-dataset JSONL used by this repository with explicit input
+and output paths:
+
+```bash
+set -a
+source .env
+set +a
+python scripts/prepare_daily_omni.py \
+  --qa-json /path/to/daily_omni/qa.json \
+  --video-root /path/to/daily_omni/Videos \
+  --output-jsonl /path/to/daily_omni/daily_omni_cuts_v3.jsonl
+```
+
+This command prepares the full benchmark only; it does not reconstruct the
+paper's train/validation/test splits.
+
 ## Direct inference
 
 | Model | Optimizer | Val (125) | Overall | Test (947) | Delta Test |

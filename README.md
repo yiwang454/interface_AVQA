@@ -3,8 +3,10 @@ Public repository for paper submission _DESIGNING TEXTUAL INTERFACES TO ENHANCE 
 
 This file records implementation and evaluation details omitted from the main paper for space.
 
-The paper-reported results and their historical launcher inventory are recorded in
-[`experiment_README.md`](experiment_README.md).
+The paper-reported results, the process for replicating the corresponding
+experiments, and their historical launcher inventory are recorded in
+[`experiment_README.md`](experiment_README.md), including setup steps for this
+repository.
 
 ## Dataset split
 

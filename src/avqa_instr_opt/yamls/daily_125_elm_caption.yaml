@@ -1,5 +1,4 @@
 task:
-  caption_dir: "/mnt/ceph_rbd/data/avqa_project/daily_omni/daily_omni_captioner_instruct_qwen3-omni-instruct_QA_PROMPT_OMNI_CAPTIONER_TIMESTAMP3_0.0"
   timeout: 180
   max_retries: 3
 

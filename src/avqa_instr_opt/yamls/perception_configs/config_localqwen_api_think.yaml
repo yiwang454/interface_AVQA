@@ -10,8 +10,6 @@ task:
 
 model:
   qwen_model: qwen3-omni
-  qwen_base_url: "http://127.0.0.1:8000/v1"
-  qwen_api_key: EMPTY
 
 sampling_params:
   temperature: 0.6

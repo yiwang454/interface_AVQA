@@ -10,8 +10,6 @@ track_best_outputs: true
 
 run:
   algorithm: gepa
-  trainset_jsonl: /mnt/ceph_rbd/data/avqa_project/daily_omni/daily_omni_cuts_selectedTrain125.jsonl
-  valset_jsonl: /mnt/ceph_rbd/data/avqa_project/daily_omni/daily_omni_cuts_selectedVal125.jsonl
   output_program: ${GEPA_RUN_DIR}/compiled_gepa.json
   initial_program: ${GEPA_RUN_DIR}/initial_gepa_program.json
   metadata_json: ${GEPA_RUN_DIR}/compiled_gepa_metadata.json

@@ -9,8 +9,6 @@ task:
 
 model:
   qwen_model: qwen3-omni-instruct
-  qwen_base_url: "http://10.62.242.118:8000/v1"
-  qwen_api_key: EMPTY
   
 sampling_params:
   temperature: 0.0
