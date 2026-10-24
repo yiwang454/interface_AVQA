@@ -3,6 +3,9 @@ Public repository for paper submission _DESIGNING TEXTUAL INTERFACES TO ENHANCE 
 
 This file records implementation and evaluation details omitted from the main paper for space.
 
+The paper-reported results and their historical launcher inventory are recorded in
+[`experiment_README.md`](experiment_README.md).
+
 ## Dataset split
 
 Experiments use the **Daily-Omni** benchmark with 1,197 audio-visual multiple-choice QA examples.
@@ -131,11 +134,11 @@ We therefore report **single-run Qwen evaluations**.
 
 The unoptimized Gemini direct-inference baseline and the GEPA-optimized Gemini direct-inference evaluation are each repeated **three times**.
 
-For these repeated Gemini direct-inference experiments, we report **mean and standard deviation** across the three runs.
+For these repeated Gemini direct-inference experiments, we report the run with the **median held-out test accuracy** among the three runs.
 
 ### Captioner-reasoner and ReAct interface studies
 
-Captioner-reasoner and ReAct experiments are reported from **single runs**. These systems are used primarily as interface case studies: their main purpose is to study how APO behaves when optimization operates through explicit intermediate textual interfaces, and subsequent analysis focuses on failure modes, reasoning traces, and changes in evidence acquisition rather than small run-to-run differences.
+Each reported captioner-reasoner and ReAct experiment uses a **single full-dataset inference run**. These systems are used primarily as interface case studies: their main purpose is to study how APO behaves when optimization operates through explicit intermediate textual interfaces, and subsequent analysis focuses on failure modes, reasoning traces, and changes in evidence acquisition.
 
 ## Notes on reproducibility
 
