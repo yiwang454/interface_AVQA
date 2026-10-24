@@ -330,7 +330,10 @@ def _main(args) -> int:
         }
     elif args.caption_mode == "live":
         caption_transport = {
-            "api": "generateContent", "provider": "vertex", "media": "inlineData",
+            "api": "generateContent", "provider": "vertex",
+            "media": (
+                "inlineData" if caption_profile_obj.media_mode == "inline" else "fileData"
+            ),
         }
     else:
         caption_transport = None

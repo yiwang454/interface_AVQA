@@ -143,7 +143,9 @@ def _load_gemini_config(
         (task, {"timeout": "TIMEOUT", "max_retries": "MAX_RETRIES",
                 "retry_delay_s": "RETRY_DELAY_S", "batch_size": "BATCH_SIZE"}),
         (model, {"gemini_model": "MODEL", "gemini_base_url": "BASE_URL",
-                 "gemini_api_key": "API_KEY"}),
+                 "gemini_api_key": "API_KEY", "gemini_media_mode": "MEDIA_MODE",
+                 "gemini_local_data_root": "LOCAL_DATA_ROOT",
+                 "gemini_gcs_data_root": "GCS_DATA_ROOT"}),
         (sampling, {"temperature": "TEMPERATURE", "top_p": "TOP_P",
                     "top_k": "TOP_K", "max_tokens": "MAX_TOKENS",
                     "gemini_seed": "SEED", "seed": "SEED",
@@ -395,6 +397,9 @@ class GeminiModelProfile:
     include_thoughts: bool
     print_first_prompt: bool
     thinking_budget: int | None = None
+    media_mode: str = "inline"
+    local_data_root: str | None = None
+    gcs_data_root: str | None = None
 
     def redacted(self) -> dict[str, Any]:
         return redact_sensitive(vars(self))
@@ -407,6 +412,11 @@ def resolve_gemini_profile(
     role: str = "captioner_gemini", *, default_top_k: int | None = None
 ) -> GeminiModelProfile:
     """Resolve an official Vertex Gemini profile with role-scoped overrides."""
+    media_mode = _gemini_env_value("MEDIA_MODE", "inline", role=role).strip().lower()
+    if media_mode not in {"inline", "gcs"}:
+        raise ValueError(
+            f"Unsupported Gemini media mode {media_mode!r}; expected inline or gcs."
+        )
     seed = _gemini_env_optional_value("SEED", role=role)
     thinking_budget = _gemini_env_optional_value("THINKING_BUDGET", role=role)
     scoped_top_k = os.environ.get(f"{role.strip().upper()}_TOP_K")
@@ -435,6 +445,9 @@ def resolve_gemini_profile(
         print_first_prompt=_gemini_env_value("PRINT_FIRST_PROMPT", "false", role=role).strip().lower()
         in {"1", "true", "yes", "on"},
         thinking_budget=(int(thinking_budget) if thinking_budget is not None else None),
+        media_mode=media_mode,
+        local_data_root=_gemini_env_optional_value("LOCAL_DATA_ROOT", role=role),
+        gcs_data_root=_gemini_env_optional_value("GCS_DATA_ROOT", role=role),
     )
 
 

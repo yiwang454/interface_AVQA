@@ -15,7 +15,6 @@ model:
 sampling_params:
   temperature: 0.0
   top_p: 1.0
-  # Vertex Gemini validates topK in the range 1..64.
   top_k: 64
   max_tokens: 4096
   # Gemini 2.5 Flash: 0 disables thinking; -1 would restore dynamic thinking.

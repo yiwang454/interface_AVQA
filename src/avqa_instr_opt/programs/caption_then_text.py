@@ -25,7 +25,7 @@ import json
 
 import dspy
 
-from ..clients.gemini import call_gemini_messages, inline_data_from_path
+from ..clients.gemini import call_gemini_messages, media_data_from_path
 from ..clients.qwen_omni import call_qwen_messages, to_data_url
 from ..clients.reliable import active_qwen_request_profile, qwen_request_slot
 from ..clients.text_lm import build_text_lm
@@ -132,12 +132,20 @@ class CaptionThenTextQAProgram(dspy.Module):
                 "caption_prompt_template",
                 user_instruction=prompt_value("captioner", "user_instruction"),
             )
+            def media_part(path: str) -> dict[str, Any]:
+                return media_data_from_path(
+                    path,
+                    media_mode=self.captioner_profile.media_mode,
+                    local_data_root=self.captioner_profile.local_data_root,
+                    gcs_data_root=self.captioner_profile.gcs_data_root,
+                )
+
             parts: list[dict[str, Any]] = []
             if audio_path and not self.captioner_profile.video_only:
-                parts.append(inline_data_from_path(audio_path))
+                parts.append(media_part(audio_path))
             # video_only means no separate audio file; Gemini still receives the
             # MP4's embedded audio track, matching the sibling baseline.
-            parts.extend([inline_data_from_path(video_path), {"text": caption_prompt}])
+            parts.extend([media_part(video_path), {"text": caption_prompt}])
             return [{"role": "user", "parts": parts}]
 
         video_first, use_audio_in_video = self._active_media_layout()

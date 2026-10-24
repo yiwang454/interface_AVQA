@@ -7,7 +7,7 @@ from typing import Any
 
 import dspy
 
-from ..clients.gemini import call_gemini_messages, inline_data_from_path
+from ..clients.gemini import call_gemini_messages, media_data_from_path
 from ..config import GeminiModelProfile, resolve_gemini_profile
 from ..metrics import format_options, normalize_option_letter
 from ..prompt_config import prompt_value, render_prompt
@@ -44,12 +44,20 @@ class DirectGeminiAVQAProgram(dspy.Module):
             formatted_options=format_options(options_json),
             options=json.loads(options_json),
         )
+        def media_part(path: str) -> dict[str, Any]:
+            return media_data_from_path(
+                path,
+                media_mode=self.profile.media_mode,
+                local_data_root=self.profile.local_data_root,
+                gcs_data_root=self.profile.gcs_data_root,
+            )
+
         parts: list[dict[str, Any]] = []
         if audio_path and not self.profile.video_only:
-            parts.append(inline_data_from_path(audio_path))
+            parts.append(media_part(audio_path))
         # The DailyOmni MP4 contains its audio track, so video_only suppresses
         # only the redundant standalone WAV attachment.
-        parts.extend([inline_data_from_path(video_path), {"text": prompt_text}])
+        parts.extend([media_part(video_path), {"text": prompt_text}])
         return [{"role": "user", "parts": parts}]
 
     def forward(

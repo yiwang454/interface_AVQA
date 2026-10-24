@@ -14,6 +14,5 @@ model:
 sampling_params:
   temperature: 0.0
   top_p: 1.0
-  # The official Vertex API omits topK rather than accepting 0.
   top_k: null
   max_tokens: 4096

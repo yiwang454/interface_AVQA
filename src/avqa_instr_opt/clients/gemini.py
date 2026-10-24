@@ -1,7 +1,7 @@
 """Official Vertex AI Gemini ``generateContent`` transport for local AVQA media.
 
-Local video and audio are encoded with Vertex's native ``inlineData`` shape,
-so public runs do not depend on a project-specific Cloud Storage mirror.
+Local video and audio use Vertex's native ``inlineData`` shape by default;
+``fileData`` can reference the same media from Google Cloud Storage.
 """
 
 from __future__ import annotations
@@ -50,6 +50,68 @@ def inline_data_from_path(path: str, mime_type: str | None = None) -> dict[str, 
     with open(path, "rb") as handle:
         data = base64.b64encode(handle.read()).decode("utf-8")
     return {"inlineData": {"mimeType": mime_type or _mime_type(path), "data": data}}
+
+
+def local_path_to_gcs_uri(
+    path: str, *, local_data_root: str | None, gcs_data_root: str | None
+) -> str:
+    """Map a local media path to the corresponding Vertex-readable GCS URI."""
+    if path.startswith("gs://"):
+        return path
+    if not local_data_root or not gcs_data_root:
+        raise ValueError(
+            "GCS media mode requires GEMINI_LOCAL_DATA_ROOT and GEMINI_GCS_DATA_ROOT "
+            "when media paths are local."
+        )
+    if not gcs_data_root.startswith("gs://"):
+        raise ValueError(
+            f"GEMINI_GCS_DATA_ROOT must start with gs://, got {gcs_data_root!r}"
+        )
+    local_path = Path(path).expanduser().resolve()
+    root_path = Path(local_data_root).expanduser().resolve()
+    try:
+        relative_path = local_path.relative_to(root_path)
+    except ValueError as exc:
+        raise ValueError(
+            f"Media path {path!r} is outside GEMINI_LOCAL_DATA_ROOT "
+            f"{local_data_root!r}."
+        ) from exc
+    return f"{gcs_data_root.rstrip('/')}/{relative_path.as_posix()}"
+
+
+def file_data_from_path(
+    path: str,
+    *,
+    local_data_root: str | None = None,
+    gcs_data_root: str | None = None,
+    mime_type: str | None = None,
+) -> dict[str, Any]:
+    """Build a Vertex ``fileData`` part referencing media in GCS."""
+    uri = local_path_to_gcs_uri(
+        path, local_data_root=local_data_root, gcs_data_root=gcs_data_root
+    )
+    return {"fileData": {"mimeType": mime_type or _mime_type(uri), "fileUri": uri}}
+
+
+def media_data_from_path(
+    path: str,
+    *,
+    media_mode: str = "inline",
+    local_data_root: str | None = None,
+    gcs_data_root: str | None = None,
+    mime_type: str | None = None,
+) -> dict[str, Any]:
+    """Build an inline or GCS-backed Vertex media part."""
+    if media_mode == "inline":
+        return inline_data_from_path(path, mime_type=mime_type)
+    if media_mode == "gcs":
+        return file_data_from_path(
+            path,
+            local_data_root=local_data_root,
+            gcs_data_root=gcs_data_root,
+            mime_type=mime_type,
+        )
+    raise ValueError(f"Unsupported Gemini media mode: {media_mode!r}")
 
 
 def _response_text_parts(payload: dict[str, Any]) -> tuple[str, str]:

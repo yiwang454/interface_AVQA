@@ -287,7 +287,8 @@ def _main(args) -> int:
     if is_gemini:
         manifest["transport"] = {
             "backend": "gemini", "api": "generateContent",
-            "provider": "vertex", "media": "inlineData",
+            "provider": "vertex",
+            "media": "inlineData" if profile.media_mode == "inline" else "fileData",
             "retry_degenerate_response": True, "include_thoughts": profile.include_thoughts,
             "thinking_budget": profile.thinking_budget,
         }
