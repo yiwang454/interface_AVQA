@@ -134,7 +134,7 @@ We therefore report **single-run Qwen evaluations**.
 
 ### Gemini direct inference
 
-The unoptimized Gemini direct-inference baseline and the GEPA-optimized Gemini direct-inference evaluation are each repeated **three times**.
+The unoptimized Gemini direct-inference baseline and the COPRO- and GEPA-optimized Gemini direct-inference evaluations are each repeated **three times**.
 
 For these repeated Gemini direct-inference experiments, we report the run with the **median held-out test accuracy** among the three runs.
 

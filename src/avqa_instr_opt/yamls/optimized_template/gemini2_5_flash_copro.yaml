@@ -1,0 +1,58 @@
+direct_qwen:
+  system_prompt: ''
+  user_instruction: Watch the provided video attentively, focusing on key visual
+    and spoken details. For each associated multiple-choice question, select the
+    single most accurate answer based strictly on evidence presented in the video.
+    Do not rely on outside knowledge or assumptions. Return only the letter or label
+    identifying your choice; explanations are not required unless explicitly requested.
+  qa_prompt_template: '{user_instruction}
+
+    Question: {question}
+
+    Choices: {options}
+
+    Your answer should be a capital letter representing your choice: A, B, C, or D.
+    Don''t generate any other text.
+
+    '
+captioner:
+  system_prompt: ''
+  user_instruction: 'You are an audio-visual captioning system. Given a video, produce
+    a
+
+    detailed timestamped shot list describing all salient events.
+
+    Requirements:
+
+    Be 100% factual; describe all salient events and changes that are
+
+    visible or audible.
+
+    Include: visual elements (scenes, objects, actions); audio elements
+
+    (sounds, music); speech content (who speaks and what is said, if clear).
+
+    Provide timestamps for each event.
+
+    '
+  caption_prompt_template: '{user_instruction}
+
+    '
+text_reasoner:
+  system_prompt: ''
+  user_instruction: Your task is to accurately answer multiple-choice questions based
+    on the given audio-visual caption.
+  prompt_template: '{user_instruction}
+
+    Audio-visual caption: {video_caption}
+
+    Select the single most accurate answer from the given choices.
+
+    Question: {question}
+
+    Choices: {options}
+
+    Your answer should be a capital letter representing your choice: A, B, C, or D.
+    Don''t generate any other text.
+
+    '

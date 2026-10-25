@@ -38,33 +38,33 @@ paper's train/validation/test splits.
 
 ## Direct inference
 
-| Model | Optimizer | Val (125) | Overall | Test (947) | Delta Test |
-| --- | --- | ---: | ---: | ---: | ---: |
-| Qwen3-Omni-30B-A3B-Instruct | None | 72.80 | 72.18 | 71.81 | - |
-| Qwen3-Omni-30B-A3B-Instruct | COPRO | 71.20 | 71.93 | 71.59 | -0.22 |
-| Qwen3-Omni-30B-A3B-Instruct | GEPA | 75.20 | 72.01 | 71.49 | -0.32 |
-| Qwen3-Omni-30B-A3B-Thinking | None | 69.60 | 69.76 | 69.06 | - |
-| Qwen3-Omni-30B-A3B-Thinking | COPRO | 71.20 | 69.26 | 68.85 | -0.21 |
-| Qwen3-Omni-30B-A3B-Thinking | GEPA | 72.80 | 69.92 | 70.01 | +0.95 |
+| Model | Optimizer | Val (125) | Overall | Test (947) | Delta Test | Launcher |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| Qwen3-Omni-30B-A3B-Instruct | None | 72.80 | 72.18 | 71.81 | - | [`scripts/run_daily_qwen_inference.sh`](scripts/run_daily_qwen_inference.sh) |
+| Qwen3-Omni-30B-A3B-Instruct | COPRO | 71.20 | 71.93 | 71.59 | -0.22 | [`scripts/run_daily_qwen3_omni_instruct_copro_inference.sh`](scripts/run_daily_qwen3_omni_instruct_copro_inference.sh) |
+| Qwen3-Omni-30B-A3B-Instruct | GEPA | 75.20 | 72.01 | 71.49 | -0.32 | [`scripts/run_daily_qwen3_omni_instruct_gepa_inference.sh`](scripts/run_daily_qwen3_omni_instruct_gepa_inference.sh) |
+| Qwen3-Omni-30B-A3B-Thinking | None | 69.60 | 69.76 | 69.06 | - | [`scripts/run_daily_qwen3_omni_thinking_inference.sh`](scripts/run_daily_qwen3_omni_thinking_inference.sh) |
+| Qwen3-Omni-30B-A3B-Thinking | COPRO | 71.20 | 69.26 | 68.85 | -0.21 | [`scripts/run_daily_qwen3_omni_thinking_copro_inference.sh`](scripts/run_daily_qwen3_omni_thinking_copro_inference.sh) |
+| Qwen3-Omni-30B-A3B-Thinking | GEPA | 72.80 | 69.92 | 70.01 | +0.95 | [`scripts/run_daily_qwen3_omni_thinking_gepa_inference.sh`](scripts/run_daily_qwen3_omni_thinking_gepa_inference.sh) |
 
-| Model | Optimizer | Val (125) | Overall | Test (947) | Delta Test |
-| --- | --- | ---: | ---: | ---: | ---: |
-| Gemini-2.5-Flash | None | 77.60 | 77.03 | 75.71 | - |
-| Gemini-2.5-Flash | COPRO | 72.80 | 78.11 | 78.25 | +2.54 |
-| Gemini-2.5-Flash | GEPA | 79.20 | 79.62 | 79.83 | +4.12 |
+| Model | Optimizer | Val (125) | Overall | Test (947) | Delta Test | Launcher |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| Gemini-2.5-Flash | None | 77.60 | 77.03 | 75.71 | - | [`scripts/run_daily_gemini2_5_flash_direct_qa_baseline.sh`](scripts/run_daily_gemini2_5_flash_direct_qa_baseline.sh) |
+| Gemini-2.5-Flash | COPRO | 72.80 | 78.11 | 78.25 | +2.54 | [`scripts/run_daily_gemini2_5_flash_direct_qa_copro_inference.sh`](scripts/run_daily_gemini2_5_flash_direct_qa_copro_inference.sh) |
+| Gemini-2.5-Flash | GEPA | 79.20 | 79.62 | 79.83 | +4.12 | [`scripts/run_daily_gemini2_5_flash_direct_qa_gepa_inference.sh`](scripts/run_daily_gemini2_5_flash_direct_qa_gepa_inference.sh) |
 
-The Gemini baseline, COPRO and GEPA rows are the runs with median held-out test
-accuracy among three full-dataset inference runs.
+The Gemini baseline, and Gemini COPRO and GEPA inference results are the runs with median held-out test
+accuracy among three repetitive full-dataset inference runs, so as to mitigate the impact from closed-source model run-to-run variance. Qwen inference results are fully replicable by fixing the random seeds (and other relevant sampling parameters), so Qwen inference experiments were run only once.
 
 ## Captioner-reasoner interface
 
-| System | Captioner | Reasoner | Optimized component | Val (125) | Overall | Test (947) |
-| --- | --- | --- | --- | ---: | ---: | ---: |
-| Direct inference reference | - | Gemini-2.5-Flash | None | 77.60 | 77.03 | 75.71 |
-| Captioner-reasoner | Gemini-2.5-Flash | Gemini-2.5-Flash | None | 68.00 | 69.17 | 69.27 |
-| Captioner-reasoner | Gemini-2.5-Flash | GPT-4.1 | None | 68.00 | 69.50 | 70.01 |
-| Captioner-reasoner | Gemini-2.5-Flash | GPT-4.1 | GEPA on caption | 79.20 | 68.50 | 67.90 |
-| Captioner-reasoner | Gemini-2.5-Flash | GPT-4.1 | GEPA on reasoner | 71.20 | 70.01 | 69.90 |
+| System | Captioner | Reasoner | Optimized component | Val (125) | Overall | Test (947) | Launcher |
+| --- | --- | --- | --- | ---: | ---: | ---: | --- |
+| Direct inference reference | - | Gemini-2.5-Flash | None | 77.60 | 77.03 | 75.71 | [`scripts/run_daily_gemini2_5_flash_direct_qa_baseline.sh`](scripts/run_daily_gemini2_5_flash_direct_qa_baseline.sh) |
+| Captioner-reasoner | Gemini-2.5-Flash | Gemini-2.5-Flash | None | 68.00 | 69.17 | 69.27 | [`scripts/run_daily_d0_cached_gemini_caption_gemini2_5_flash_reasoner.sh`](scripts/run_daily_d0_cached_gemini_caption_gemini2_5_flash_reasoner.sh) |
+| Captioner-reasoner | Gemini-2.5-Flash | GPT-4.1 | None | 68.00 | 69.50 | 70.01 | [`scripts/run_daily_d0_cached_gemini_caption_gpt4_1_reasoner_repeats.sh`](scripts/run_daily_d0_cached_gemini_caption_gpt4_1_reasoner_repeats.sh) |
+| Captioner-reasoner | Gemini-2.5-Flash | GPT-4.1 | GEPA on caption | 79.20 | 68.50 | 67.90 | [`scripts/run_daily_d1_gemini_caption_gepa_seed2_candidate8_full_inference.sh`](scripts/run_daily_d1_gemini_caption_gepa_seed2_candidate8_full_inference.sh) |
+| Captioner-reasoner | Gemini-2.5-Flash | GPT-4.1 | GEPA on reasoner | 71.20 | 70.01 | 69.90 | [`scripts/run_daily_d2_cached_gemini_caption_gepa_seed42_candidate7_full_inference_repeats.sh`](scripts/run_daily_d2_cached_gemini_caption_gepa_seed42_candidate7_full_inference_repeats.sh) |
 
 Each reported captioner-reasoner result comes from a single full-dataset
 inference run. For the GEPA rows, the optimized prompt is selected on the
@@ -72,11 +72,11 @@ validation split and then evaluated once on the full dataset. We only ran single
 
 ## ReAct agent interface
 
-| System | Optimization | Val (125) | Overall | Test (947) |
-| --- | --- | ---: | ---: | ---: |
-| Gemini-2.5-Flash direct reference | None | 77.60 | 77.03 | 75.71 |
-| ReAct | None | 74.40 | 76.11 | 76.03 |
-| ReAct | GEPA | 76.80 | 75.77 | 76.03 |
+| System | Optimization | Val (125) | Overall | Test (947) | Launcher |
+| --- | --- | ---: | ---: | ---: | --- |
+| Gemini-2.5-Flash direct reference | None | 77.60 | 77.03 | 75.71 | [`scripts/run_daily_gemini2_5_flash_direct_qa_baseline.sh`](scripts/run_daily_gemini2_5_flash_direct_qa_baseline.sh) |
+| ReAct | None | 74.40 | 76.11 | 76.03 | [`scripts/09_run_dspy_react_agent_daily_gepa_gpt4_1_gemini_first_cached_then_live_caption_free_react_4turn_seed18_2500.sh`](scripts/09_run_dspy_react_agent_daily_gepa_gpt4_1_gemini_first_cached_then_live_caption_free_react_4turn_seed18_2500.sh) |
+| ReAct | GEPA | 76.80 | 75.77 | 76.03 | [`scripts/16_run_dspy_react_agent_daily_gepa_gpt4_1_gemini_guidance_seed42_seed2_full_inference.sh`](scripts/16_run_dspy_react_agent_daily_gepa_gpt4_1_gemini_guidance_seed42_seed2_full_inference.sh) |
 
 Each reported ReAct result likewise comes from a single full-dataset inference
 run; no multi-run aggregate is reported.
