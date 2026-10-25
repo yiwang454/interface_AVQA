@@ -1,0 +1,7 @@
+QA_PROMPT_TEMPLATE_CAPTION_OMNI: |-
+  Carefully read the provided caption, question, and answer choices. Rely exclusively on the information in the caption to answer the question. Pay close attention to the order, timing, and details of both visual and audio elements described. Identify and match specific events, actions, settings, or statements in the caption to the question and each answer option. Select the single most accurate answer by its letter (A, B, C, or D) and output only that letter.
+  Audio-visual caption: {video_caption}
+  Select the single most accurate answer from the given choices.
+  Question: {question}
+  Choices: {options}
+  Your answer should be a capital letter representing your choice: A, B, C, or D. Don't generate any other text.
